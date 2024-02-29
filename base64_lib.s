@@ -1,8 +1,8 @@
 .global convert_24bit
 .text
 
-# input : three bytes (a0 a1 a2)
-# output :  the three bytes converted to base64 (four bytes in a0 a1 a2 a3)
+# input : three bytes in a0 a1 a2 and the output buffer address in a3
+# output :  the three bytes converted to base64 at (a3)
 convert_24bit:
 # step 1 : put the 3 bytes (24 bits) in a 32-bit word (result in a0)
 
@@ -31,21 +31,25 @@ convert_24bit:
     and     t3,t3,a0
 
 # step 3 : retrieve corresponding char from the LUT
-# result : 4 bytes in a0 a1 a2 a3
+# result : 4 bytes at (a3)
 
     la      t4,table            # pointer to the LUT
 
     add     t5,t4,t0            # t5 = table index + offset (first sextet)
     lb      a0,(t5)
+    sb      a0,(a3)
 
     add     t5,t4,t1            # t5 = table index + offset (second sextet)
-    lb      a1,(t5)
+    lb      a0,(t5)
+    sb      a0,1(a3)
 
     add     t5,t4,t2            # t5 = table index + offset (third sextet)
-    lb      a2,(t5)
+    lb      a0,(t5)
+    sb      a0,2(a3)
 
     add     t5,t4,t3            # t5 = table index + offset (fourth sextet)
-    lb      a3,(t5)
+    lb      a0,(t5)
+    sb      a0,3(a3)
 
     ret
 
