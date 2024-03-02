@@ -6,6 +6,8 @@
 .equ SYS_OPENAT,56
 .equ SYS_CLOSE,57
 .equ SYS_EXIT,93
+.equ SYS_LSEEK,62
+.equ SYS_MMAP,222
 
 .equ AT_FDCWD,-100
 .equ STDIN_FILENO,0
@@ -33,6 +35,21 @@ _start:
     ecall
     blt     a0,x0,exit          # Error ? we exit
     mv      s11,a0              # Saving FD in s11
+
+    li      a1,0                # offset
+    li      a2,2                # SEEK_END
+    li      a7,SYS_LSEEK        # "lseek" system call
+    ecall
+    blt     a0,x0,close_exit    # Error ? we close the FD and exit
+    mv      s6,a0               # we save the file size in s6
+
+    mv      a0,s11              # first argument : the file descriptor (saved in s11)
+    li      a1,0                # offset
+    li      a2,0                # SEEK_SET
+    li      a7,SYS_LSEEK        # "lseek" system call
+    ecall
+    blt     a0,x0,close_exit    # Error ? we close the FD and exit
+
     j       convert_file
 
 stdin:
