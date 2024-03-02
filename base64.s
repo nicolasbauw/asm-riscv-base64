@@ -13,7 +13,8 @@
 .equ STDIN_FILENO,0
 
 .equ BUF_SIZE,4092
-.equ BASE64_BUF_SIZE,4096
+.equ BASE64_BUF_SIZE,
+.equ MAX_FILE_SIZE_BSS,6144
 
 # s11 : FD
 # s10 : number of bytes read
@@ -119,6 +120,19 @@ close_exit:
 exit:
     li      a7,SYS_EXIT         # "exit" system call
     ecall
+
+alloc_buffer:
+    mv      a0,x0               # the kernel chooses the (page-aligned) address at which to create the mapping
+    mv      a1,s6
+    sll     a1,a1,1             # We reserve double the file size
+    li      a2,3                # PROT_READ | PROT_WRITE
+    li      a3,22               # MAP_PRIVATE | MAP_ANONYMOUS
+    li      a4,-1               # Not mapping a file
+    mv      a5,x0               # Offset 0
+    li      a7,SYS_MMAP         # mmap system call
+
+    sd      a0,(t0)             # Saving allocated buffer address
+    ret
 
 .lcomm buffer,BUF_SIZE
 .lcomm base64_buffer,BASE64_BUF_SIZE
