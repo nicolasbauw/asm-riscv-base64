@@ -23,8 +23,7 @@
 _start:
     ld      t0,(sp)             # argc
     li      t1,2
-    li      a0,-1               # Error code if less than 2 args
-    blt     t0,t1,exit          # Less than 2 args ? we exit
+    blt     t0,t1,stdin         # Less than 2 args ? we will read from stdin
 
     li      a0,AT_FDCWD         # AT_FDCWD
     ld      a1,16(sp)           # argv[1]
@@ -34,6 +33,10 @@ _start:
     ecall
     blt     a0,x0,exit          # Error ? we exit
     mv      s11,a0              # Saving FD in s11
+    j       convert_file
+
+stdin:
+    mv      s11,x0              # No arg ? read from STDIN_FILENO
 
 convert_file:
     la      s2,buffer           # s2 = pointer to buffer
