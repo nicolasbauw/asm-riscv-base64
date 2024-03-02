@@ -100,7 +100,7 @@ close_exit:
     ecall
 
 exit:
-    li  a7,SYS_EXIT             # "exit" system call
+    li      a7,SYS_EXIT         # "exit" system call
     ecall
 
 .lcomm buffer,BUF_SIZE
