@@ -2,7 +2,7 @@
 .text
 
 # input : three bytes in a0 a1 a2 and the output buffer address in a3
-# output :  the three bytes converted to base64 at (a3)
+# output :  four bytes at (a3)
 convert_24bit:
 # step 1 : put the 3 bytes (24 bits) in a 32-bit word (result in a0)
 
