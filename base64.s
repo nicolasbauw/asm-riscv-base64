@@ -73,9 +73,9 @@ fill_buffer:
     mv      s10,a0              # Saving number of read bytes to s10
 
 loop:
-    lb      a0,(s2)
-    lb      a1,1(s2)
-    lb      a2,2(s2)
+    lbu     a0,(s2)
+    lbu     a1,1(s2)
+    lbu     a2,2(s2)
     jal     convert_24bit
 
     addi    s2,s2,3             # Incrementing input buffer pointer
