@@ -21,7 +21,7 @@
 # s9  : immediate value 3 (minimum amount of bytes to form a 24-bit value)
 # s8  : immediate value 2 (for padding calculation)
 # s7  : immediate value 0x3d ('=' padding char)
-# s6  : File descriptor
+# s6  : File size
 # s2  : pointer to input buffer
 # a3  : pointer to output buffer
 _start:
