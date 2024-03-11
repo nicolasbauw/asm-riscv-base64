@@ -86,8 +86,8 @@ loop:
 
     li      s7,0x3d             # '=' padding char
     blt     s10,s8,one_padding  # 1 byte left ? we jump
-    lb      a0,(s2)             # 2 bytes left ? we load these bytes
-    lb      a1,1(s2)
+    lbu     a0,(s2)             # 2 bytes left ? we load these bytes
+    lbu     a1,1(s2)
     mv      a2,x0               # and a third null byte
     jal     convert_24bit       # Making the last conversion
     sb      s7,3(a3)            # Adding padding char
@@ -95,7 +95,7 @@ loop:
     j       print_buffer
 
 one_padding:
-    lb      a0,(s2)             # 1 byte left ?
+    lbu     a0,(s2)             # 1 byte left ?
     mv      a1,x0
     mv      a2,x0
     jal     convert_24bit       # Making the last conversion
