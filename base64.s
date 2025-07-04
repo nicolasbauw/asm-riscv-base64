@@ -102,8 +102,6 @@ one_padding:
     sb      s7,2(a3)            # Adding 2 padding chars
     sb      s7,3(a3)
 
-    j       print_buffer
-
 print_buffer:
     addi    a3,a3,4             # Incrementing buffer pointer by the 4 last bytes
 no_padding:
