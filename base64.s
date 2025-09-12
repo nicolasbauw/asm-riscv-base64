@@ -82,10 +82,10 @@ loop:
     addi    a3,a3,4             # Incrementing output buffer pointer
     addi    s10,s10,-3          # Decrementing byte counter
     bge     s10,s9,loop         # Still a minimum of 3 bytes to process ? continue loop
-    beq     s10,x0,no_padding
+    beq     s10,x0,no_padding   # No bytes to process ? end of conversion
 
     li      s7,0x3d             # '=' padding char
-    blt     s10,s8,one_padding  # 1 byte left ? we jump
+    blt     s10,s8,two_padding  # 1 byte left ? we jump
     lbu     a0,(s2)             # 2 bytes left ? we load these bytes
     lbu     a1,1(s2)
     mv      a2,x0               # and a third null byte
@@ -94,7 +94,7 @@ loop:
 
     j       print_buffer
 
-one_padding:
+two_padding:
     lbu     a0,(s2)             # 1 byte left ?
     mv      a1,x0
     mv      a2,x0
