@@ -12,8 +12,8 @@
 .equ AT_FDCWD,-100
 .equ STDIN_FILENO,0
 
-.equ BUF_SIZE,100000
-.equ BASE64_BUF_SIZE,140000
+.equ BUF_SIZE,102400            # 25 * 4K pages
+.equ BASE64_BUF_SIZE,143360     # 35 * 4K pages
 
 
 # s11 : FD
